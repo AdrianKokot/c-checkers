@@ -16,6 +16,7 @@ This project is made for "Low-Level Programming" classes at the Poznan Universit
 
 List of used technologies & libraries:
  - C Programming Language
+   - [Allegro](https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace)
 
 ## Project requirements
 
