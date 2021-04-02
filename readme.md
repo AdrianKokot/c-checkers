@@ -6,17 +6,17 @@ This project is made for "Low-Level Programming" classes at the Poznan Universit
 
 ### Chosen theme
 
---
+Checkers
 
 ### Goals
 
---
+Checkers for two local players
 
 ### Project tech stack
 
 List of used technologies & libraries:
  - C Programming Language
-   - [Allegro](https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace)
+   - [CSFML](https://www.sfml-dev.org/download/csfml/)
 
 ## Project requirements
 
