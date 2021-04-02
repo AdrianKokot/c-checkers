@@ -8,9 +8,12 @@ sfSprite *createSprite_Rect(char *texturePath, int left, int top, int width, int
 sfSprite *createSprite_FromTexture(sfTexture *spriteTexture);
 sfSprite *createSprite_FromTextureRect(sfTexture *spriteTexture, int left, int top, int width, int height);
 int **createBoard(int size);
+int **createPlayerBoard(int size);
 void destory2dArray(int **arr);
 
-void drawBoard(sfRenderWindow *window, sfSprite ***spritesArr, int boardSize, int textureSize);
-sfSprite ***createSpritesBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize);
+sfSprite ***createSpriteBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize);
+sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize);
+void destorySpriteBoard(sfSprite ***spritesArr, int boardSize);
+void draw2dArray(sfRenderWindow *window, sfSprite ***spritesArr, int row, int col);
 
 #endif

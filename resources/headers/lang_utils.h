@@ -7,5 +7,6 @@
 int **create2dArray(int m, int n);
 void destory2dArray(int **arr);
 void destoryArray(int *arr);
+void print2dArray(int **arr, int row, int col);
 
 #endif

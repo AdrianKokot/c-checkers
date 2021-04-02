@@ -56,7 +56,23 @@ int **createBoard(int size)
   return board;
 }
 
-sfSprite ***createSpritesBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize)
+int **createPlayerBoard(int size)
+{
+  int playerRows = (size - 2) / 2;
+  int **board = create2dArray(size, size);
+
+  for (int i = 0; i < size; i++)
+  {
+    for (int j = 0; j < size; j++)
+    {
+      board[i][j] = (i + j) % 2 ? (i < playerRows ? 1 : (i >= (size - playerRows) ? -1 : 0)) : 0;
+    }
+  }
+
+  return board;
+}
+
+sfSprite ***createSpriteBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize)
 {
   sfSprite *spriteA = createSprite_Rect(texturePath, firstSpriteStart, 0, spriteSize, spriteSize),
            *spriteB = createSprite_Rect(texturePath, secondSpriteStart, 0, spriteSize, spriteSize);
@@ -79,13 +95,66 @@ sfSprite ***createSpritesBoard(const int size, int **intBoard, char *texturePath
   return spritesBoard;
 }
 
-void drawBoard(sfRenderWindow *window, sfSprite ***spritesArr, int boardSize, int textureSize)
+sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize)
+{
+  sfSprite *spriteA = createSprite_Rect(texturePath, firstSpriteStart, 0, spriteSize, spriteSize),
+           *spriteB = createSprite_Rect(texturePath, secondSpriteStart, 0, spriteSize, spriteSize);
+
+  sfSprite **(*spritesBoard) = (sfSprite ***)malloc(2 * sizeof(sfSprite **));
+  int playerPawnCount = ((size - 2) / 2) * (size / 2);
+
+  for (int i = 0; i < 2; i++)
+  {
+    spritesBoard[i] = (sfSprite **)malloc(playerPawnCount * sizeof(sfSprite *));
+    for (int j = 0; j < playerPawnCount; j++)
+    {
+      spritesBoard[i][j] = i == 0 ? sfSprite_copy(spriteA) : sfSprite_copy(spriteB);
+    }
+  }
+
+  int playerIdx = 0;
+  int playerPawnIdx = 0;
+  for (int i = 0; i < size; i++)
+  {
+    if (i == size / 2)
+    {
+      playerIdx = 1;
+      playerPawnIdx = 0;
+    }
+
+    for (int j = 0; j < size; j++)
+    {
+      if (intBoard[i][j] != 0)
+      {
+        sfVector2f vectorOffset = {j * spriteSize, i * spriteSize};
+
+        sfSprite_move(spritesBoard[playerIdx][playerPawnIdx], vectorOffset);
+        playerPawnIdx++;
+      }
+    }
+  }
+
+  return spritesBoard;
+}
+
+void draw2dArray(sfRenderWindow *window, sfSprite ***spritesArr, int row, int col)
+{
+  for (int i = 0; i < row; i++)
+  {
+    for (int j = 0; j < col; j++)
+    {
+      sfRenderWindow_drawSprite(window, spritesArr[i][j], NULL);
+    }
+  }
+}
+
+void destorySpriteBoard(sfSprite ***spritesArr, int boardSize)
 {
   for (int i = 0; i < boardSize; i++)
   {
     for (int j = 0; j < boardSize; j++)
     {
-      sfRenderWindow_drawSprite(window, spritesArr[i][j], NULL);
+      sfSprite_destroy(spritesArr[i][j]);
     }
   }
 }
