@@ -11,9 +11,9 @@ int **createBoard(int size);
 int **createPlayerBoard(int size);
 void destory2dArray(int **arr);
 
-sfSprite ***createSpriteBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize);
-sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize);
-void destorySpriteBoard(sfSprite ***spritesArr, int boardSize);
+sfSprite ***createSpriteBoard(const int size, int **intBoard, char texturePaths[2][255], int spriteSize);
+sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char texturePaths[2][255], int spriteSize);
+void destorySprite2dArray(sfSprite ***spritesArr, int row, int col);
 void draw2dArray(sfRenderWindow *window, sfSprite ***spritesArr, int row, int col);
 
 #endif

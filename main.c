@@ -12,13 +12,17 @@ int main()
   int **intBoard = createBoard(intBoardSize),
       **intPlayerBoard = createPlayerBoard(intBoardSize);
 
-  char stringResourceArr[][255] = {
-      "./resources/sprites/board_tiles.pyxel.png",
-      "./resources/sprites/player_pawns.pyxel.png"};
+  char stringBoardResourceArr[2][255] = {
+      "./resources/sprites/tile2.png",
+      "./resources/sprites/tile1.png"};
+
+  char stringPawnsResourceArr[2][255] = {
+      "./resources/sprites/pawn1.png",
+      "./resources/sprites/pawn2.png"};
 
   sfRenderWindow *window = createGameWindow(intBoardSize * intTextureSize);
-  sfSprite ***spriteBoard = createSpriteBoard(intBoardSize, intBoard, stringResourceArr[0], intTextureSize, 0, intTextureSize);
-  sfSprite ***spritePlayerPawnArr = createSpritePlayerPawnBoard(intBoardSize, intPlayerBoard, stringResourceArr[1], intTextureSize, 0, intTextureSize);
+  sfSprite ***spriteBoardArr = createSpriteBoard(intBoardSize, intBoard, stringBoardResourceArr, intTextureSize);
+  sfSprite ***spritePawnArr = createSpritePlayerPawnBoard(intBoardSize, intPlayerBoard, stringPawnsResourceArr, intTextureSize);
 
   sfEvent event;
   if (!window)
@@ -37,14 +41,15 @@ int main()
     sfRenderWindow_clear(window, sfBlack);
 
     // Main Game Loop
-    draw2dArray(window, spriteBoard, intBoardSize, intBoardSize);
-    draw2dArray(window, spritePlayerPawnArr, intPlayerCount, intPlayerPawnCount);
+    draw2dArray(window, spriteBoardArr, intBoardSize, intBoardSize);
+    draw2dArray(window, spritePawnArr, intPlayerCount, intPlayerPawnCount);
 
     sfRenderWindow_display(window);
   }
 
   sfRenderWindow_destroy(window);
   destory2dArray(intBoard);
-  destorySpriteBoard(spriteBoard, intBoardSize);
+  destorySprite2dArray(spriteBoardArr, intBoardSize, intBoardSize);
+  destorySprite2dArray(spritePawnArr, intPlayerCount, intPlayerPawnCount);
   return 0;
 }

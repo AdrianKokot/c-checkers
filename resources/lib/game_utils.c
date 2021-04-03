@@ -72,10 +72,10 @@ int **createPlayerBoard(int size)
   return board;
 }
 
-sfSprite ***createSpriteBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize)
+sfSprite ***createSpriteBoard(const int size, int **intBoard, char texturePaths[2][255], int spriteSize)
 {
-  sfSprite *spriteA = createSprite_Rect(texturePath, firstSpriteStart, 0, spriteSize, spriteSize),
-           *spriteB = createSprite_Rect(texturePath, secondSpriteStart, 0, spriteSize, spriteSize);
+  sfSprite *spriteA = createSprite(texturePaths[0]),
+           *spriteB = createSprite(texturePaths[1]);
 
   sfSprite **(*spritesBoard) = (sfSprite ***)malloc(size * sizeof(sfSprite **));
 
@@ -95,10 +95,10 @@ sfSprite ***createSpriteBoard(const int size, int **intBoard, char *texturePath,
   return spritesBoard;
 }
 
-sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char *texturePath, int firstSpriteStart, int secondSpriteStart, int spriteSize)
+sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char texturePaths[2][255], int spriteSize)
 {
-  sfSprite *spriteA = createSprite_Rect(texturePath, firstSpriteStart, 0, spriteSize, spriteSize),
-           *spriteB = createSprite_Rect(texturePath, secondSpriteStart, 0, spriteSize, spriteSize);
+  sfSprite *spriteA = createSprite(texturePaths[0]),
+           *spriteB = createSprite(texturePaths[1]);
 
   sfSprite **(*spritesBoard) = (sfSprite ***)malloc(2 * sizeof(sfSprite **));
   int playerPawnCount = ((size - 2) / 2) * (size / 2);
@@ -148,11 +148,11 @@ void draw2dArray(sfRenderWindow *window, sfSprite ***spritesArr, int row, int co
   }
 }
 
-void destorySpriteBoard(sfSprite ***spritesArr, int boardSize)
+void destorySprite2dArray(sfSprite ***spritesArr, int row, int col)
 {
-  for (int i = 0; i < boardSize; i++)
+  for (int i = 0; i < row; i++)
   {
-    for (int j = 0; j < boardSize; j++)
+    for (int j = 0; j < col; j++)
     {
       sfSprite_destroy(spritesArr[i][j]);
     }
