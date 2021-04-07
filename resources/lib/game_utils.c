@@ -72,7 +72,7 @@ int **createPlayerBoard(int size)
   return board;
 }
 
-sfSprite ***createSpriteBoard(const int size, int **intBoard, char texturePaths[2][255], int spriteSize)
+sfSprite ***createSpriteBoard(const int size, int **intBoard, char texturePaths[2][255], int spriteSize, int boardBorder)
 {
   sfSprite *spriteA = createSprite(texturePaths[0]),
            *spriteB = createSprite(texturePaths[1]);
@@ -85,7 +85,7 @@ sfSprite ***createSpriteBoard(const int size, int **intBoard, char texturePaths[
 
     for (int j = 0; j < size; j++)
     {
-      sfVector2f vectorOffset = {i * spriteSize, j * spriteSize};
+      sfVector2f vectorOffset = {i * spriteSize + boardBorder, j * spriteSize + boardBorder};
 
       spritesBoard[i][j] = intBoard[i][j] == 1 ? sfSprite_copy(spriteA) : sfSprite_copy(spriteB);
       sfSprite_move(spritesBoard[i][j], vectorOffset);
@@ -95,7 +95,7 @@ sfSprite ***createSpriteBoard(const int size, int **intBoard, char texturePaths[
   return spritesBoard;
 }
 
-sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char texturePaths[2][255], int spriteSize)
+sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char texturePaths[2][255], int spriteSize, int boardBorder)
 {
   sfSprite *spriteA = createSprite(texturePaths[0]),
            *spriteB = createSprite(texturePaths[1]);
@@ -126,7 +126,7 @@ sfSprite ***createSpritePlayerPawnBoard(const int size, int **intBoard, char tex
     {
       if (intBoard[i][j] != 0)
       {
-        sfVector2f vectorOffset = {j * spriteSize, i * spriteSize};
+        sfVector2f vectorOffset = {j * spriteSize + boardBorder, i * spriteSize + boardBorder};
 
         sfSprite_move(spritesBoard[playerIdx][playerPawnIdx], vectorOffset);
         playerPawnIdx++;
