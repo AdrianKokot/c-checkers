@@ -1,6 +1,4 @@
-#include "./resources/headers/game_window.h"
-#include "./resources/headers/game_utils.h"
-#include "./resources/headers/lang_utils.h"
+#include "./resources/headers/checkers.h"
 
 int main()
 {

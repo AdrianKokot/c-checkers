@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+typedef enum {false, true} bool;
+
 int **create2dArray(int m, int n);
 void destory2dArray(int **arr);
 void destoryArray(int *arr);
