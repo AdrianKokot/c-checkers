@@ -35,8 +35,8 @@ Board *board_create(
 
 void board_createBoardSprites(Board *board)
 {
-  sfSprite *spriteA = createSprite_FromTexture(board->tileTextures[0]),
-           *spriteB = createSprite_FromTexture(board->tileTextures[2]);
+  sfSprite *spriteA = engine_createSpriteFromTexture(board->tileTextures[0]),
+           *spriteB = engine_createSpriteFromTexture(board->tileTextures[2]);
 
   board->tileSprites = (sfSprite ***)malloc(board->boardSize * sizeof(sfSprite **));
 
@@ -83,7 +83,13 @@ void board_destroy(Board *board)
 {
   sfRenderWindow_destroy(board->window);
 
-  destorySprite2dArray(board->tileSprites, board->boardSize, board->boardSize);
+  for (int i = 0; i < board->boardSize; i++)
+  {
+    for (int j = 0; j < board->boardSize; j++)
+    {
+      sfSprite_destroy(board->tileSprites[i][j]);
+    }
+  }
 
   for (int i = 0; i < board->playerCount; i++)
   {
@@ -104,15 +110,19 @@ void board_destroy(Board *board)
 
 void board_draw(Board *board)
 {
-
   board_drawBoard(board);
   board_drawPawns(board);
-
 }
 
 void board_drawBoard(Board *board)
 {
-  draw2dArray(board->window, board->tileSprites, board->boardSize, board->boardSize);
+  for (int i = 0; i < board->boardSize; i++)
+  {
+    for (int j = 0; j < board->boardSize; j++)
+    {
+      sfRenderWindow_drawSprite(board->window, board->tileSprites[i][j], NULL);
+    }
+  }
 }
 
 void board_drawPawns(Board *board)
@@ -126,16 +136,19 @@ void board_drawPawns(Board *board)
   }
 }
 
+// TODO properly fill board_checkWinStatus
 bool board_checkWinStatus(Board *board)
 {
   return false;
 }
 
+// TODO properly fill board_getWinStatus
 int board_getWinStatus(Board *board)
 {
   return -1;
 }
 
+// TODO properly fill board_checkPawnSelectionByMouse
 void board_checkPawnSelectionByMouse(Board *board)
 {
 }

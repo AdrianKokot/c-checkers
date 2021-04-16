@@ -1,7 +1,7 @@
 #ifndef PAWN_H
 #define PAWN_H
 
-#include "./types.h"
+#include "./checkers.h"
 
 /**
  * @brief Pawn type representation
@@ -32,9 +32,6 @@ struct Pawn
   PawnType pawnType;
   sfSprite *sprite;
 };
-
-#include "./player.h"
-#include "./board.h"
 
 /**
  * @brief Pawn constructor.

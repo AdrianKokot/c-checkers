@@ -1,7 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "./types.h"
+#include "./checkers.h"
 
 /**
  * @brief Position on the board
@@ -113,7 +113,5 @@ int board_getWinStatus(Board *board);
  * @return void
  */
 void board_checkPawnSelectionByMouse(Board *board);
-
-#include "./player.h"
 
 #endif

@@ -21,7 +21,7 @@ int main()
       "./resources/sprites/pawn2.png"};
 
   Board *board = board_create(
-      createGameWindow(intWindowSize),
+      engine_createWindow(intWindowSize),
       intBoardSize,
       intTextureSize,
       intBoardBorder,
@@ -31,7 +31,7 @@ int main()
 
   // TESTOWY BACKGROUND
   sfColor sfColorBoardBackground = sfColor_fromRGB(78, 52, 46);
-  sfSprite *spriteBoardBackground = createSprite("./resources/sprites/board_background.jpg");
+  sfSprite *spriteBoardBackground = engine_createSprite("./resources/sprites/board_background.jpg");
 
   sfVector2f shapeBoardBorderSize = {intWindowSize - 32, intWindowSize - 32};
   sfVector2f shapeBoardBorderPosition = {16, 16};
