@@ -27,7 +27,7 @@ Board *board_create(
     board->tileTextures[i] = sfTexture_createFromFile(boardTileTextures[i], &intRect);
   }
 
-  board_createPlayers(board, 4, playerPawnTextures, &intRect);
+  board_createPlayers(board, 2, playerPawnTextures, &intRect);
   board_createBoardSprites(board);
 
   return board;
