@@ -47,8 +47,8 @@ Board *board_create(
     int boardSize,
     int textureSize,
     int boardBorder,
-    char boardTileTextures[4][255],
-    char playerPawnTextures[4][255]);
+    const char boardTileTextures[4][255],
+    const char playerPawnTextures[4][255]);
 
 /**
  * @brief Create players for board
@@ -61,7 +61,7 @@ Board *board_create(
 void board_createPlayers(
     Board *board,
     int intPlayerPawnTexturesCount,
-    char playerPawnTextures[4][255],
+    const char playerPawnTextures[4][255],
     sfIntRect *intRect);
 
 /**
@@ -70,6 +70,12 @@ void board_createPlayers(
  * @return void
  */
 void board_createBoardSprites(Board *board);
+
+/**
+ * @brief Draw board tiles and player pawns on sfRenderWindow
+ * @return void
+ */
+void board_draw(Board *board);
 
 /**
  * @brief Draw board tiles on sfRenderWindow
@@ -82,6 +88,12 @@ void board_drawBoard(Board *board);
  * @return void
  */
 void board_drawPawns(Board *board);
+
+/**
+ * @brief Destroy memory allocation for all items in board. Including window, players, pawns
+ * @return void
+ */
+void board_destroy(Board *board);
 
 /**
  * @brief Check if game has ended

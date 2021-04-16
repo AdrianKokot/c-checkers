@@ -27,9 +27,11 @@ struct Player
  * @param textures array of textures that contains two textures:
  *                     the standard pawn texture and
  *                     the queen pawn texture
+ * @param isTopPlayer bool that deremines where pawns
+ *                    are going to be drawn
  * @return created player
  */
-Player *player_create(int iPawnCount, Board *board, sfTexture **textures);
+Player *player_create(int iPawnCount, Board *board, sfTexture **textures, bool isTopPlayer);
 
 /**
  * @brief Makes given player an active one on the board.

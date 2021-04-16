@@ -5,8 +5,8 @@ Board *board_create(
     int boardSize,
     int textureSize,
     int boardBorder,
-    char boardTileTextures[4][255],
-    char playerPawnTextures[4][255])
+    const char boardTileTextures[4][255],
+    const char playerPawnTextures[4][255])
 {
   int intBoardTilesTexturesCount = 4;
 
@@ -62,7 +62,7 @@ void board_createBoardSprites(Board *board)
 void board_createPlayers(
     Board *board,
     int intPlayerPawnTexturesCount,
-    char playerPawnTextures[4][255],
+    const char playerPawnTextures[4][255],
     sfIntRect *intRect)
 {
   board->players = malloc(sizeof(Player) * 2);
@@ -75,8 +75,39 @@ void board_createPlayers(
       playerTextures[j] = sfTexture_createFromFile(playerPawnTextures[board->playerCount * i + j], intRect);
     }
 
-    board->players[i] = player_create(board->playerPawnCount, board, playerTextures);
+    board->players[i] = player_create(board->playerPawnCount, board, playerTextures, i == 0 ? true : false);
   }
+}
+
+void board_destroy(Board *board)
+{
+  sfRenderWindow_destroy(board->window);
+
+  destorySprite2dArray(board->tileSprites, board->boardSize, board->boardSize);
+
+  for (int i = 0; i < board->playerCount; i++)
+  {
+    for (int j = 0; j < board->players[i]->iPawnCount; j++)
+    {
+      sfSprite_destroy(board->players[i]->pawns[j]->sprite);
+      free(board->players[i]->pawns[j]);
+    }
+
+    for (int j = 0; j < 2; j++)
+    {
+      sfTexture_destroy(board->players[i]->textures[j]);
+    }
+
+    free(board->players[i]);
+  }
+}
+
+void board_draw(Board *board)
+{
+
+  board_drawBoard(board);
+  board_drawPawns(board);
+
 }
 
 void board_drawBoard(Board *board)
