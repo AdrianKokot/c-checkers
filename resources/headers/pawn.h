@@ -43,7 +43,7 @@ struct Pawn
  * @param player player that pawn will be assigned to
  * @return created pawn
  */
-Pawn pawn_create(int iPosX, int iPosY, Player *player);
+Pawn *pawn_create(int iPosX, int iPosY, Player *player);
 
 /**
  * @brief Set new texture to pawn.
@@ -60,7 +60,7 @@ void pawn_setTexture(Pawn *pawn, const sfTexture *texture);
  * @param type type to assign
  * @return void
  */
-void pawn_changeType(Pawn *pawn, PawnType type);
+void pawn_setType(Pawn *pawn, PawnType type);
 
 /**
  * @brief Get available moves on board for given pawn.

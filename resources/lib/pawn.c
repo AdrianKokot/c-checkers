@@ -1,14 +1,16 @@
 #include "../headers/pawn.h"
 
-Pawn pawn_create(int iPosX, int iPosY, Player *player)
+Pawn *pawn_create(int iPosX, int iPosY, Player *player)
 {
-  BoardPosition position = {iPosX, iPosY};
+  Pawn *pawn = malloc(sizeof(Pawn));
 
-  sfSprite *pawnSprite = sfSprite_create();
+  pawn->player = player;
+  pawn->position = malloc(sizeof(BoardPosition));
+  pawn->position->x = iPosX;
+  pawn->position->y = iPosY;
+  pawn->sprite = sfSprite_create();
 
-  Pawn pawn = {player, &position, Standard, pawnSprite};
-
-  pawn_setTexture(&pawn, pawn.player->textures[pawn.pawnType]);
+  pawn_setType(pawn, Standard);
 
   return pawn;
 }
@@ -18,9 +20,9 @@ void pawn_setTexture(Pawn *pawn, const sfTexture *texture)
   sfSprite_setTexture(pawn->sprite, texture, sfTrue);
 }
 
-void pawn_changeType(Pawn *pawn, PawnType type)
+void pawn_setType(Pawn *pawn, PawnType type)
 {
-  pawn->pawnType = pawn->pawnType == Standard ? Standard : Queen;
+  pawn->pawnType = type;
 
   pawn_setTexture(pawn, pawn->player->textures[pawn->pawnType]);
 }
