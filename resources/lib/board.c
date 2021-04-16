@@ -108,6 +108,7 @@ void board_destroy(Board *board)
   }
 }
 
+// TODO add board background drawing to board_draw
 void board_draw(Board *board)
 {
   board_drawBoard(board);
