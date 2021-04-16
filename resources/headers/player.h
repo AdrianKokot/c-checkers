@@ -39,4 +39,6 @@ Player *player_create(int iPawnCount, Board *board, sfTexture **textures);
  */
 void player_makeActive(Player *player);
 
+#include "./pawn.h"
+
 #endif
