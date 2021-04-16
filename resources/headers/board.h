@@ -1,18 +1,29 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <SFML/Graphics.h>
-#include "./lang_utils.h"
+#include "./types.h"
 
 /**
  * @brief Position on the board
+ * @param int x
+ * @param int y
  */
-typedef struct BoardPosition BoardPosition;
+struct BoardPosition
+{
+  int x;
+  int y;
+};
 
 /**
  * @brief Board representation
+ * @param sfRenderWindow *window
+ * @param Player **players
  */
-typedef struct Board Board;
+struct Board
+{
+  sfRenderWindow *window;
+  Player **players;
+};
 
 /**
  * @brief Board constructor.
@@ -62,7 +73,5 @@ int board_getWinStatus();
  * @return void
  */
 void board_checkPawnSelectionByMouse();
-
-#include "./player.h"
 
 #endif

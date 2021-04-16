@@ -1,20 +1,35 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "./types.h"
+
 /**
  * @brief Player representation on Board.
+ * @param bool bIsActive
+ * @param int iPawnCount
+ * @param sfTexture *textures
+ * @param Pawn **pawns
+ * @param Board *board
  */
-typedef struct Player Player;
+struct Player
+{
+  bool bIsActive;
+  int iPawnCount;
+  sfTexture **textures;
+  Pawn **pawns;
+  Board *board;
+};
 
 /**
  * @brief Player constructor.
  * @param iPawnCount number of pawns to create
- * @param texturePaths string array that contains two paths:
- *                     to the standard pawn texture and
+ * @param board that player is assigned to
+ * @param textures array of textures that contains two textures:
+ *                     the standard pawn texture and
  *                     the queen pawn texture
  * @return created player
  */
-Player *player_create(int iPawnCount, char **texturePaths);
+Player *player_create(int iPawnCount, Board *board, sfTexture **textures);
 
 /**
  * @brief Makes given player an active one on the board.
@@ -23,12 +38,5 @@ Player *player_create(int iPawnCount, char **texturePaths);
  * @return void
  */
 void player_makeActive(Player *player);
-
-#include <SFML/Graphics.h>
-#include "./lang_utils.h"
-#include "./board.h"
-#include "./pawn.h"
-#include "./game_utils.h"
-#include "./game_window.h"
 
 #endif
