@@ -28,7 +28,6 @@ int main()
       stringBoardTileTexturesPaths,
       stringPlayerPawnTexturesPaths);
 
-
   // TESTOWY BACKGROUND
   sfColor sfColorBoardBackground = sfColor_fromRGB(78, 52, 46);
   sfSprite *spriteBoardBackground = engine_createSprite("./resources/sprites/board_background.jpg");
@@ -43,19 +42,12 @@ int main()
 
   // KONIEC TESTU
 
-  sfEvent event;
   if (!board->window)
     return 1;
 
   while (sfRenderWindow_isOpen(board->window))
   {
-    while (sfRenderWindow_pollEvent(board->window, &event))
-    {
-      if (event.type == sfEvtClosed)
-      {
-        sfRenderWindow_close(board->window);
-      }
-    }
+    engine_checkEvents(board);
 
     sfRenderWindow_clear(board->window, sfBlack);
 

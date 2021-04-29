@@ -27,3 +27,19 @@ sfSprite *engine_createSpriteFromTexture(sfTexture *spriteTexture)
 
   return sprite;
 }
+
+void engine_checkEvents(Board *board)
+{
+  sfEvent event;
+  while (sfRenderWindow_pollEvent(board->window, &event))
+  {
+    if (event.type == sfEvtClosed)
+    {
+      sfRenderWindow_close(board->window);
+    }
+    if (event.type == sfEvtMouseButtonPressed)
+    {
+      printf("%d %d\n", event.mouseButton.x, event.mouseButton.y);
+    }
+  }
+}
