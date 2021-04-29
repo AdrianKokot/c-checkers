@@ -10,15 +10,15 @@ int main()
 
   const char stringBoardTileTexturesPaths[4][255] = {
       "./resources/sprites/tile2.png",
-      "./resources/sprites/tile2.png",
+      "./resources/sprites/tile2_marked.png",
       "./resources/sprites/tile1.png",
-      "./resources/sprites/tile1.png"};
+      "./resources/sprites/tile1_marked.png"};
 
   const char stringPlayerPawnTexturesPaths[4][255] = {
       "./resources/sprites/pawn1.png",
-      "./resources/sprites/pawn1.png",
+      "./resources/sprites/pawn1_queen.png",
       "./resources/sprites/pawn2.png",
-      "./resources/sprites/pawn2.png"};
+      "./resources/sprites/pawn2_queen.png"};
 
   Board *board = board_create(
       engine_createWindow(intWindowSize),

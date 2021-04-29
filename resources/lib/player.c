@@ -24,11 +24,14 @@ Player *player_create(int iPawnCount, Board *board, sfTexture **textures, bool i
   {
     for (int j = 0; j < player->board->boardSize && pawnIdx < player->iPawnCount; j++)
     {
-      if ( (i + j) % 2 == 1)
+      if ((i + j) % 2 == 1)
       {
         sfVector2f vectorOffset = {
             j * board->textureSize + board->boardBorder,
             i * board->textureSize + board->boardBorder};
+
+        player->pawns[pawnIdx]->position->x = j;
+        player->pawns[pawnIdx]->position->y = i;
 
         sfSprite_move(player->pawns[pawnIdx]->sprite, vectorOffset);
         pawnIdx++;

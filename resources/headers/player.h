@@ -38,7 +38,6 @@ Player *player_create(int iPawnCount, Board *board, sfTexture **textures, bool i
 /**
  * @brief Makes given player an active one on the board.
  *
- * @param board board that contains player
  * @param player player that will be made active one
  * @return void
  */

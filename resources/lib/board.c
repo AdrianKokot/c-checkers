@@ -30,6 +30,8 @@ Board *board_create(
   board_createPlayers(board, 2, playerPawnTextures, &intRect);
   board_createBoardSprites(board);
 
+  player_makeActive(board->players[1]);
+
   return board;
 }
 
@@ -161,8 +163,7 @@ void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
 
     for (int i = 0; i < board->players[idx]->iPawnCount; i++)
     {
-      if (board->players[idx]->pawns[i]->position->x == posX
-          && board->players[idx]->pawns[i]->position->y == posY)
+      if (board->players[idx]->pawns[i]->position->x == posX && board->players[idx]->pawns[i]->position->y == posY)
       {
         foundIdx = i;
         break;
