@@ -39,7 +39,7 @@ void engine_checkEvents(Board *board)
     }
     if (event.type == sfEvtMouseButtonPressed)
     {
-      printf("%d %d\n", event.mouseButton.x, event.mouseButton.y);
+      board_checkPawnSelectionByMouse(board, event.mouseButton.x, event.mouseButton.y);
     }
   }
 }

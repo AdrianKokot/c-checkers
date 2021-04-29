@@ -124,6 +124,6 @@ int board_getWinStatus(Board *board);
  *
  * @return void
  */
-void board_checkPawnSelectionByMouse(Board *board);
+void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY);
 
 #endif

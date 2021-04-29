@@ -149,7 +149,28 @@ int board_getWinStatus(Board *board)
   return -1;
 }
 
-// TODO properly fill board_checkPawnSelectionByMouse
-void board_checkPawnSelectionByMouse(Board *board)
+void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
 {
+  if (mousePosX > board->boardBorder && mousePosY > board->boardBorder)
+  {
+    int posX = (mousePosX - board->boardBorder) / board->textureSize,
+        posY = (mousePosY - board->boardBorder) / board->textureSize;
+
+    int foundIdx = -1;
+    int idx = board->players[0]->bIsActive ? 0 : 1;
+
+    for (int i = 0; i < board->players[idx]->iPawnCount; i++)
+    {
+      if (board->players[idx]->pawns[i]->position->x == posX
+          && board->players[idx]->pawns[i]->position->y == posY)
+      {
+        foundIdx = i;
+        break;
+      }
+    }
+    if (foundIdx >= 0)
+    {
+      pawn_markAvailableMoves(board->players[idx]->pawns[foundIdx]);
+    }
+  }
 }
