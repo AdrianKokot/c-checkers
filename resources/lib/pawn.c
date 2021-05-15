@@ -9,6 +9,7 @@ Pawn *pawn_create(int iPosX, int iPosY, Player *player)
   pawn->position->x = iPosX;
   pawn->position->y = iPosY;
   pawn->sprite = sfSprite_create();
+  pawn->availableBeats = (Pawn **)malloc(sizeof(Pawn *) * 4);
 
   pawn_setType(pawn, Standard);
 
@@ -27,6 +28,7 @@ void pawn_setType(Pawn *pawn, PawnType type)
   pawn_setTexture(pawn, pawn->player->textures[pawn->pawnType]);
 }
 
+// FIXME some bugs with beating
 BoardPosition pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int **pawnsOnBoard, int boardSize, int yDiff)
 {
   if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
@@ -38,6 +40,10 @@ BoardPosition pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int **pawnsO
     }
     else if (pawnsOnBoard[y][x] == -1)
     {
+      int idx = pawn->position->x < x ? (pawn->position->y > y ? 0 : 1) : (pawn->position->y > y ? 3 : 2);
+
+      pawn->availableBeats[idx] = pawn_findByPos(pawn->player->board, x, y);
+
       return pawn_checkMoveAvailableness(pawn, pawn->position->x > x ? x - 1 : x + 1, y + yDiff, pawnsOnBoard, boardSize, yDiff);
     }
   }
@@ -125,4 +131,62 @@ void pawn_markAvailableMoves(Pawn *pawn)
   {
     board_markTileTexture(pawn->player->board, availablePositions[i].x, availablePositions[i].y);
   }
+}
+
+// FIXME bugs with beating
+void pawn_move(Pawn *pawn, BoardPosition position)
+{
+
+  if ((pawn->player->board->players[0]->bIsActive && position.y == 0) || (pawn->player->board->players[0]->bIsActive && position.y == pawn->player->board->boardSize - 1))
+  {
+    pawn_setType(pawn, Queen);
+  }
+
+  int xDiff = abs(pawn->position->x - position.x);
+  int yDiff = abs(pawn->position->y - position.y);
+
+  int idx = pawn->position->x < position.x ? (pawn->position->y > position.y ? 0 : 1) : (pawn->position->y > position.y ? 3 : 2);
+
+  if (pawn->availableBeats[idx])
+  {
+    pawn_remove(pawn->availableBeats[idx]);
+  }
+
+  sfVector2f vectorOffset = {
+      position.x * pawn->player->board->textureSize + pawn->player->board->boardBorder,
+      position.y * pawn->player->board->textureSize + pawn->player->board->boardBorder};
+
+  pawn->position->x = position.x;
+  pawn->position->y = position.y;
+  sfSprite_setPosition(pawn->sprite, vectorOffset);
+}
+
+void pawn_remove(Pawn *pawn)
+{
+  Pawn *temp = pawn->player->pawns[pawn->player->iPawnCount - 1];
+  for (int i = 0; i < pawn->player->iPawnCount; i++)
+  {
+    if (pawn->player->pawns[i] == pawn)
+    {
+      pawn->player->pawns[i] = temp;
+      pawn->player->pawns[pawn->player->iPawnCount - 1] = pawn;
+      pawn->position->x = -1;
+      pawn->position->y = -1;
+      sfSprite_destroy(pawn->sprite);
+      pawn->player->iPawnCount--;
+      return;
+    }
+  }
+}
+
+Pawn *pawn_findByPos(Board *board, int x, int y) {
+  for (int i = 0; i < 2; i++)
+  {
+    for(int j = 0; j<board->players[i]->iPawnCount; j++) {
+      if(board->players[i]->pawns[j]->position->x == x && board->players[i]->pawns[j]->position->y == y){
+        return board->players[i]->pawns[j];
+      }
+    }
+  }
+  return board->players[0]->pawns[0];
 }

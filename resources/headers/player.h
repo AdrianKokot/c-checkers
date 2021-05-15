@@ -19,6 +19,7 @@ struct Player
   sfTexture **textures;
   Pawn **pawns;
   Board *board;
+  Pawn *selectedPawn;
 };
 
 /**

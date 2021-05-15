@@ -4,6 +4,7 @@
 #include <SFML/Graphics.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "./types.h"
 

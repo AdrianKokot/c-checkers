@@ -32,6 +32,7 @@ struct Pawn
   BoardPosition *position;
   PawnType pawnType;
   sfSprite *sprite;
+  Pawn **availableBeats;
 };
 
 /**
@@ -86,6 +87,23 @@ void pawn_markAvailableMoves(Pawn *pawn);
  * @param position position on board that is the destination for pawn
  * @return void
  */
-// void pawn_move(Pawn *pawn, BoardPosition position);
+void pawn_move(Pawn *pawn, BoardPosition position);
 
+/**
+ * @brief Remove given pawn from the game
+ *
+ * @param pawn
+ * @return void
+ */
+void pawn_remove(Pawn *pawn);
+
+/**
+ * @brief Find pawn on board on given axis
+ *
+ * @param board
+ * @param x
+ * @param y
+ * @return Pawn*
+ */
+Pawn *pawn_findByPos(Board *board, int x, int y);
 #endif

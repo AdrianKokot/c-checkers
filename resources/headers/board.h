@@ -127,6 +127,14 @@ int board_getWinStatus(Board *board);
 void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY);
 
 /**
+ * @brief Checks if current player selected their pawn available move by mouse event
+ *        if yes, then pawn is moved
+ *
+ * @return void
+ */
+void board_checkTileSelectionByMouse(Board *board, int mousePosX, int mousePosY);
+
+/**
  * @brief Resets all tiles texture to the default one
  *
  * @param board

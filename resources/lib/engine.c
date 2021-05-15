@@ -40,6 +40,7 @@ void engine_checkEvents(Board *board)
     if (event.type == sfEvtMouseButtonPressed)
     {
       board_checkPawnSelectionByMouse(board, event.mouseButton.x, event.mouseButton.y);
+      board_checkTileSelectionByMouse(board, event.mouseButton.x, event.mouseButton.y);
     }
   }
 }

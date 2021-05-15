@@ -155,23 +155,35 @@ void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
 {
   if (mousePosX > board->boardBorder && mousePosY > board->boardBorder)
   {
-    int posX = (mousePosX - board->boardBorder) / board->textureSize,
-        posY = (mousePosY - board->boardBorder) / board->textureSize;
+    BoardPosition pos = {(mousePosX - board->boardBorder) / board->textureSize, (mousePosY - board->boardBorder) / board->textureSize};
 
-    int foundIdx = -1;
     int idx = board->players[0]->bIsActive ? 0 : 1;
 
     for (int i = 0; i < board->players[idx]->iPawnCount; i++)
     {
-      if (board->players[idx]->pawns[i]->position->x == posX && board->players[idx]->pawns[i]->position->y == posY)
+      if (board->players[idx]->pawns[i]->position->x == pos.x && board->players[idx]->pawns[i]->position->y == pos.y)
       {
-        foundIdx = i;
-        break;
+        board->players[idx]->selectedPawn = board->players[idx]->pawns[i];
+        pawn_markAvailableMoves(board->players[idx]->selectedPawn);
+        return;
       }
     }
-    if (foundIdx >= 0)
+  }
+}
+
+void board_checkTileSelectionByMouse(Board *board, int mousePosX, int mousePosY)
+{
+  if (mousePosX > board->boardBorder && mousePosY > board->boardBorder)
+  {
+    BoardPosition pos = {(mousePosX - board->boardBorder) / board->textureSize, (mousePosY - board->boardBorder) / board->textureSize};
+
+    int idx = board->players[0]->bIsActive ? 0 : 1;
+
+    if (sfSprite_getTexture(board->tileSprites[pos.x][pos.y]) == board->tileTextures[(pos.x + pos.y) % 2 == 1 ? 1 : 3])
     {
-      pawn_markAvailableMoves(board->players[idx]->pawns[foundIdx]);
+      pawn_move(board->players[idx]->selectedPawn, pos);
+      board_resetTilesTextures(board);
+      player_makeActive(board->players[idx == 0 ? 1 : 0]);
     }
   }
 }
