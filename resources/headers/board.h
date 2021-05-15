@@ -32,6 +32,7 @@ struct Board
   Player **players;
   sfTexture **tileTextures;
   sfSprite ***tileSprites;
+  sfFont *font;
 };
 
 /**

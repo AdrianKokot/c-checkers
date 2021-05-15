@@ -1,4 +1,5 @@
 #include "./resources/headers/checkers.h"
+#include <windows.h>
 
 int main()
 {
@@ -51,12 +52,15 @@ int main()
 
     sfRenderWindow_clear(board->window, sfBlack);
 
-    // RENDER TEST BACKGROUND
-    sfRenderWindow_drawSprite(board->window, spriteBoardBackground, NULL);
-    sfRenderWindow_drawRectangleShape(board->window, shapeBoardBorder, NULL);
-    // END RENDER TEST BACKGROUND
+    if (!engine_checkWinState(board))
+    {
+      // RENDER TEST BACKGROUND
+      sfRenderWindow_drawSprite(board->window, spriteBoardBackground, NULL);
+      sfRenderWindow_drawRectangleShape(board->window, shapeBoardBorder, NULL);
+      // END RENDER TEST BACKGROUND
 
-    board_draw(board);
+      board_draw(board);
+    }
 
     sfRenderWindow_display(board->window);
   }

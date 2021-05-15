@@ -37,4 +37,11 @@ sfSprite *engine_createSpriteFromTexture(sfTexture *spriteTexture);
  */
 void engine_checkEvents(Board *board);
 
+/**
+ * @brief Checks game win state, if any player won, then displays end text
+ *
+ * @param board
+ */
+bool engine_checkWinState(Board *board);
+
 #endif

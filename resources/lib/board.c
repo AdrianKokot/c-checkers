@@ -12,6 +12,7 @@ Board *board_create(
 
   Board *board = malloc(sizeof(Board));
 
+  board->font = sfFont_createFromFile("./resources/fonts/arial.ttf");
   board->window = window;
   board->boardSize = boardSize;
   board->textureSize = textureSize;
@@ -139,16 +140,14 @@ void board_drawPawns(Board *board)
   }
 }
 
-// TODO properly fill board_checkWinStatus
 bool board_checkWinStatus(Board *board)
 {
-  return false;
+  return board->players[0]->iPawnCount == 0 || board->players[1]->iPawnCount == 0;
 }
 
-// TODO properly fill board_getWinStatus
 int board_getWinStatus(Board *board)
 {
-  return -1;
+  return board->players[0]->iPawnCount == 0 ? 1 : 0;
 }
 
 void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
