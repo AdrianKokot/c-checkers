@@ -27,3 +27,39 @@ sfSprite *engine_createSpriteFromTexture(sfTexture *spriteTexture)
 
   return sprite;
 }
+
+void engine_checkEvents(Board *board)
+{
+  sfEvent event;
+  while (sfRenderWindow_pollEvent(board->window, &event))
+  {
+    if (event.type == sfEvtClosed)
+    {
+      sfRenderWindow_close(board->window);
+    }
+    if (event.type == sfEvtMouseButtonPressed)
+    {
+      board_checkPawnSelectionByMouse(board, event.mouseButton.x, event.mouseButton.y);
+      board_checkTileSelectionByMouse(board, event.mouseButton.x, event.mouseButton.y);
+    }
+  }
+}
+
+bool engine_checkWinState(Board *board)
+{
+  if (board_checkWinStatus(board))
+  {
+    int wonPlayerIndex = board_getWinStatus(board);
+
+    sfText *endText = sfText_create();
+    sfText_setString(endText, wonPlayerIndex == 0 ? "Gracz nr 1 wygral" : "Gracz nr 2 wygral");
+    sfText_setFont(endText, board->font);
+    sfText_setCharacterSize(endText, 50);
+    sfText_setColor(endText, sfWhite);
+
+    sfRenderWindow_drawText(board->window, endText, NULL);
+
+    return true;
+  }
+  return false;
+}

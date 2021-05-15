@@ -5,6 +5,7 @@
 
 /**
  * @brief Position on the board
+ *
  * @param int x
  * @param int y
  */
@@ -16,6 +17,7 @@ struct BoardPosition
 
 /**
  * @brief Board representation
+ *
  * @param sfRenderWindow *window
  * @param Player **players
  */
@@ -30,10 +32,12 @@ struct Board
   Player **players;
   sfTexture **tileTextures;
   sfSprite ***tileSprites;
+  sfFont *font;
 };
 
 /**
  * @brief Board constructor.
+ *
  * @param window sfRenderWindow instance
  * @param boardSize number of rows and columns of board
  * @param textureSize size of texture in pixels
@@ -52,6 +56,7 @@ Board *board_create(
 
 /**
  * @brief Create players for board
+ *
  * @param board board that players will be assigned to
  * @param intPlayerPawnTexturesCount number of pawn textures for each player
  * @param playerPawnTextures 2d array of paths to each player standard and queen pawns textures
@@ -66,6 +71,7 @@ void board_createPlayers(
 
 /**
  * @brief Create sprites for board tiles
+ *
  * @param board board
  * @return void
  */
@@ -73,36 +79,42 @@ void board_createBoardSprites(Board *board);
 
 /**
  * @brief Draw board tiles and player pawns on sfRenderWindow
+ *
  * @return void
  */
 void board_draw(Board *board);
 
 /**
  * @brief Draw board tiles on sfRenderWindow
+ *
  * @return void
  */
 void board_drawBoard(Board *board);
 
 /**
  * @brief Draw player pawns on sfRenderWindow
+ *
  * @return void
  */
 void board_drawPawns(Board *board);
 
 /**
  * @brief Destroy memory allocation for all items in board. Including window, players, pawns
+ *
  * @return void
  */
 void board_destroy(Board *board);
 
 /**
  * @brief Check if game has ended
+ *
  * @return true in case of win / tie, false otherwise
  */
 bool board_checkWinStatus(Board *board);
 
 /**
  * @brief Gets index of player that won
+ *
  * @return index of player that won, -1 if nobody won
  */
 int board_getWinStatus(Board *board);
@@ -110,8 +122,35 @@ int board_getWinStatus(Board *board);
 /**
  * @brief Checks if current player selected their pawn by mouse event
  *        if yes, then pawn's available moves are marked
+ *
  * @return void
  */
-void board_checkPawnSelectionByMouse(Board *board);
+void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY);
+
+/**
+ * @brief Checks if current player selected their pawn available move by mouse event
+ *        if yes, then pawn is moved
+ *
+ * @return void
+ */
+void board_checkTileSelectionByMouse(Board *board, int mousePosX, int mousePosY);
+
+/**
+ * @brief Resets all tiles texture to the default one
+ *
+ * @param board
+ * @return void
+ */
+void board_resetTilesTextures(Board *board);
+
+/**
+ * @brief Marks tile on a given coordinates as available to move to
+ *
+ * @param board with tiles
+ * @param x position on X axis of tile
+ * @param y position on Y axis of tile
+ * @return void
+ */
+void board_markTileTexture(Board *board, int x, int y);
 
 #endif

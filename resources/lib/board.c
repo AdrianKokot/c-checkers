@@ -12,6 +12,7 @@ Board *board_create(
 
   Board *board = malloc(sizeof(Board));
 
+  board->font = sfFont_createFromFile("./resources/fonts/arial.ttf");
   board->window = window;
   board->boardSize = boardSize;
   board->textureSize = textureSize;
@@ -27,8 +28,10 @@ Board *board_create(
     board->tileTextures[i] = sfTexture_createFromFile(boardTileTextures[i], &intRect);
   }
 
-  board_createPlayers(board, 4, playerPawnTextures, &intRect);
+  board_createPlayers(board, 2, playerPawnTextures, &intRect);
   board_createBoardSprites(board);
+
+  player_makeActive(board->players[1]);
 
   return board;
 }
@@ -137,19 +140,65 @@ void board_drawPawns(Board *board)
   }
 }
 
-// TODO properly fill board_checkWinStatus
 bool board_checkWinStatus(Board *board)
 {
-  return false;
+  return board->players[0]->iPawnCount == 0 || board->players[1]->iPawnCount == 0;
 }
 
-// TODO properly fill board_getWinStatus
 int board_getWinStatus(Board *board)
 {
-  return -1;
+  return board->players[0]->iPawnCount == 0 ? 1 : 0;
 }
 
-// TODO properly fill board_checkPawnSelectionByMouse
-void board_checkPawnSelectionByMouse(Board *board)
+void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
 {
+  if (mousePosX > board->boardBorder && mousePosY > board->boardBorder)
+  {
+    BoardPosition pos = {(mousePosX - board->boardBorder) / board->textureSize, (mousePosY - board->boardBorder) / board->textureSize};
+
+    int idx = board->players[0]->bIsActive ? 0 : 1;
+
+    for (int i = 0; i < board->players[idx]->iPawnCount; i++)
+    {
+      if (board->players[idx]->pawns[i]->position->x == pos.x && board->players[idx]->pawns[i]->position->y == pos.y)
+      {
+        board->players[idx]->selectedPawn = board->players[idx]->pawns[i];
+        pawn_markAvailableMoves(board->players[idx]->selectedPawn);
+        return;
+      }
+    }
+  }
+}
+
+void board_checkTileSelectionByMouse(Board *board, int mousePosX, int mousePosY)
+{
+  if (mousePosX > board->boardBorder && mousePosY > board->boardBorder)
+  {
+    BoardPosition pos = {(mousePosX - board->boardBorder) / board->textureSize, (mousePosY - board->boardBorder) / board->textureSize};
+
+    int idx = board->players[0]->bIsActive ? 0 : 1;
+
+    if (sfSprite_getTexture(board->tileSprites[pos.x][pos.y]) == board->tileTextures[(pos.x + pos.y) % 2 == 1 ? 1 : 3])
+    {
+      pawn_move(board->players[idx]->selectedPawn, pos);
+      board_resetTilesTextures(board);
+      player_makeActive(board->players[idx == 0 ? 1 : 0]);
+    }
+  }
+}
+
+void board_resetTilesTextures(Board *board)
+{
+  for (int i = 0; i < board->boardSize; i++)
+  {
+    for (int j = 0; j < board->boardSize; j++)
+    {
+      sfSprite_setTexture(board->tileSprites[i][j], board->tileTextures[(i + j) % 2 == 1 ? 0 : 2], sfFalse);
+    }
+  }
+}
+
+void board_markTileTexture(Board *board, int x, int y)
+{
+  sfSprite_setTexture(board->tileSprites[x][y], board->tileTextures[(x + y) % 2 == 1 ? 1 : 3], sfFalse);
 }

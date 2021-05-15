@@ -5,6 +5,7 @@
 
 /**
  * @brief Player representation on Board.
+ *
  * @param bool bIsActive
  * @param int iPawnCount
  * @param sfTexture *textures
@@ -18,10 +19,12 @@ struct Player
   sfTexture **textures;
   Pawn **pawns;
   Board *board;
+  Pawn *selectedPawn;
 };
 
 /**
  * @brief Player constructor.
+ *
  * @param iPawnCount number of pawns to create
  * @param board that player is assigned to
  * @param textures array of textures that contains two textures:
@@ -35,7 +38,7 @@ Player *player_create(int iPawnCount, Board *board, sfTexture **textures, bool i
 
 /**
  * @brief Makes given player an active one on the board.
- * @param board board that contains player
+ *
  * @param player player that will be made active one
  * @return void
  */

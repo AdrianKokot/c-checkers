@@ -1,4 +1,5 @@
 #include "./resources/headers/checkers.h"
+#include <windows.h>
 
 int main()
 {
@@ -10,15 +11,15 @@ int main()
 
   const char stringBoardTileTexturesPaths[4][255] = {
       "./resources/sprites/tile2.png",
-      "./resources/sprites/tile2.png",
+      "./resources/sprites/tile2_marked.png",
       "./resources/sprites/tile1.png",
-      "./resources/sprites/tile1.png"};
+      "./resources/sprites/tile1_marked.png"};
 
   const char stringPlayerPawnTexturesPaths[4][255] = {
       "./resources/sprites/pawn1.png",
-      "./resources/sprites/pawn1.png",
+      "./resources/sprites/pawn1_queen.png",
       "./resources/sprites/pawn2.png",
-      "./resources/sprites/pawn2.png"};
+      "./resources/sprites/pawn2_queen.png"};
 
   Board *board = board_create(
       engine_createWindow(intWindowSize),
@@ -27,7 +28,6 @@ int main()
       intBoardBorder,
       stringBoardTileTexturesPaths,
       stringPlayerPawnTexturesPaths);
-
 
   // TESTOWY BACKGROUND
   sfColor sfColorBoardBackground = sfColor_fromRGB(78, 52, 46);
@@ -43,28 +43,24 @@ int main()
 
   // KONIEC TESTU
 
-  sfEvent event;
   if (!board->window)
     return 1;
 
   while (sfRenderWindow_isOpen(board->window))
   {
-    while (sfRenderWindow_pollEvent(board->window, &event))
-    {
-      if (event.type == sfEvtClosed)
-      {
-        sfRenderWindow_close(board->window);
-      }
-    }
+    engine_checkEvents(board);
 
     sfRenderWindow_clear(board->window, sfBlack);
 
-    // RENDER TEST BACKGROUND
-    sfRenderWindow_drawSprite(board->window, spriteBoardBackground, NULL);
-    sfRenderWindow_drawRectangleShape(board->window, shapeBoardBorder, NULL);
-    // END RENDER TEST BACKGROUND
+    if (!engine_checkWinState(board))
+    {
+      // RENDER TEST BACKGROUND
+      sfRenderWindow_drawSprite(board->window, spriteBoardBackground, NULL);
+      sfRenderWindow_drawRectangleShape(board->window, shapeBoardBorder, NULL);
+      // END RENDER TEST BACKGROUND
 
-    board_draw(board);
+      board_draw(board);
+    }
 
     sfRenderWindow_display(board->window);
   }
