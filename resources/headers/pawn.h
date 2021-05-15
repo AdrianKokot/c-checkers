@@ -67,11 +67,9 @@ void pawn_setType(Pawn *pawn, PawnType type);
  * @brief Get available moves on board for given pawn.
  *
  * @param pawn pawn
- * @param boardPositionArraySize int that will have assigned
- *                               size of BoardPosition array
  * @return array of positions that are available
  */
-BoardPosition *pawn_getAvailableMoves(Pawn *pawn, int *boardPositionArraySize);
+BoardPosition *pawn_getAvailableMoves(Pawn *pawn);
 
 /**
  * @brief Marks available moves for player on board.

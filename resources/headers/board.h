@@ -126,4 +126,22 @@ int board_getWinStatus(Board *board);
  */
 void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY);
 
+/**
+ * @brief Resets all tiles texture to the default one
+ *
+ * @param board
+ * @return void
+ */
+void board_resetTilesTextures(Board *board);
+
+/**
+ * @brief Marks tile on a given coordinates as available to move to
+ *
+ * @param board with tiles
+ * @param x position on X axis of tile
+ * @param y position on Y axis of tile
+ * @return void
+ */
+void board_markTileTexture(Board *board, int x, int y);
+
 #endif

@@ -175,3 +175,19 @@ void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
     }
   }
 }
+
+void board_resetTilesTextures(Board *board)
+{
+  for (int i = 0; i < board->boardSize; i++)
+  {
+    for (int j = 0; j < board->boardSize; j++)
+    {
+      sfSprite_setTexture(board->tileSprites[i][j], board->tileTextures[(i + j) % 2 == 1 ? 0 : 2], sfFalse);
+    }
+  }
+}
+
+void board_markTileTexture(Board *board, int x, int y)
+{
+  sfSprite_setTexture(board->tileSprites[x][y], board->tileTextures[(x + y) % 2 == 1 ? 1 : 3], sfFalse);
+}
