@@ -29,7 +29,7 @@ void pawn_setType(Pawn *pawn, PawnType type)
   pawn_setTexture(pawn, pawn->player->textures[pawn->pawnType]);
 }
 
-PawnBeat pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int playerPawnId, bool previousToBeat)
+PawnBeat pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int xDir, int yDir, int playerPawnId, bool previousToBeat)
 {
   PawnBeat move = {-1, -1, (BoardPosition *)malloc(sizeof(BoardPosition) * 0), 0};
 
@@ -55,19 +55,25 @@ PawnBeat pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int playerPawnId,
     }
     else if (previousToBeat == false && pawn->player->board->pawnsOnBoard[x][y] == -1 * playerPawnId)
     {
-      printf("\nCALCULATING BEAT: %d %d\n", x, y);
+      printf("\tCALCULATING BEAT: %d %d", x, y);
 
       BoardPosition beatpos = {x, y};
 
-      move = pawn_checkMoveAvailableness(pawn, pawn->position->x > x ? x - 1 : x + 1, y + playerPawnId, playerPawnId, true);
+      move = pawn_checkMoveAvailableness(pawn, x + xDir, y + yDir, xDir, yDir, playerPawnId, true);
 
       BoardPosition *beatpositions = (BoardPosition *)malloc(sizeof(BoardPosition) * move.pawnsToBeatCount + 1);
-      for(int i = 0; i < move.pawnsToBeatCount; i++) {
+      for (int i = 0; i < move.pawnsToBeatCount; i++)
+      {
         beatpositions[i] = move.pawnsToBeat[i];
       }
       beatpositions[move.pawnsToBeatCount++] = beatpos;
       move.pawnsToBeat = beatpositions;
-
+    }
+    else if (pawn->player->board->pawnsOnBoard[x][y] == playerPawnId)
+    {
+      printf("\tSAME TEAM CHECKER: %d %d", x, y);
+      move.x = -2;
+      move.y - 2;
     }
   }
 
@@ -84,57 +90,46 @@ void pawn_generateAvailableMoves(Pawn *pawn)
   if (pawn->pawnType == Queen)
   {
     // TODO queen available moves checking
-    // for (int i = pawn->position->x; i < pawn->player->board->boardBorder; i += 2)
-    // {
-    //   for (int j = pawn->position->y; j < pawn->player->board->boardBorder; j += 2)
-    //   {
-    //     pos = pawn_checkMoveAvailableness(pawn, i, j, playerPawnsId, false);
-    //     if (pos.x != -1)
-    //     {
-    //       availableMoves[filledAvailableMovesCount++] = pos;
-    //     }
-    //   }
-    //   for (int j = pawn->position->y; j >= 0; j -= 2)
-    //   {
-    //     pos = pawn_checkMoveAvailableness(pawn, i, j, playerPawnsId, false);
-    //     if (pos.x != -1)
-    //     {
-    //       availableMoves[filledAvailableMovesCount++] = pos;
-    //     }
-    //   }
-    // }
 
-    // for (int i = pawn->position->x; i >= 0; i -= 2)
-    // {
-    //   for (int j = pawn->position->y; j < pawn->player->board->boardBorder; j += 2)
-    //   {
-    //     pos = pawn_checkMoveAvailableness(pawn, i, j, playerPawnsId, false);
-    //     if (pos.x != -1)
-    //     {
-    //       availableMoves[filledAvailableMovesCount++] = pos;
-    //     }
-    //   }
-    //   for (int j = pawn->position->y; j >= 0; j -= 2)
-    //   {
-    //     pos = pawn_checkMoveAvailableness(pawn, i, j, playerPawnsId, false);
-    //     if (pos.x != -1)
-    //     {
-    //       availableMoves[filledAvailableMovesCount++] = pos;
-    //     }
-    //   }
-    // }
+    int x = pawn->position->x, y = pawn->position->y;
+
+    int direction[5] = {-1, 1, 1, -1, -1};
+
+    system("cls");
+    for (int d = 0; d < 4; d++)
+    {
+      int i = pawn->position->x + direction[d],
+          j = pawn->position->y + direction[d + 1];
+
+      while (i >= 0 && i < pawn->player->board->boardSize && j >= 0 && j < pawn->player->board->boardSize)
+      {
+        pos = pawn_checkMoveAvailableness(pawn, i, j, direction[d], direction[d + 1], playerPawnsId, false);
+
+        if (pos.x >= 0)
+          pawn->availableMoves[pawn->availableMovesCount++] = pos;
+        else if (pos.x == -2)
+        {
+          break;
+        }
+
+        if (pos.pawnsToBeatCount > 0)
+          break;
+
+        i += direction[d];
+        j += direction[d + 1];
+      }
+    }
   }
   else
   {
     int xAxis[2] = {-1, 1};
 
+    system("cls");
     for (int i = 0; i < 2; i++)
     {
-      pos = pawn_checkMoveAvailableness(pawn, pawn->position->x + xAxis[i], pawn->position->y + playerPawnsId, playerPawnsId, false);
-      if (pos.x != -1)
-      {
+      pos = pawn_checkMoveAvailableness(pawn, pawn->position->x + xAxis[i], pawn->position->y + playerPawnsId, xAxis[i], playerPawnsId, playerPawnsId, false);
+      if (pos.x >= 0)
         pawn->availableMoves[pawn->availableMovesCount++] = pos;
-      }
     }
   }
 }
