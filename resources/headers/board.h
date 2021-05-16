@@ -156,4 +156,12 @@ void board_resetTilesTextures(Board *board);
  */
 void board_markTileTexture(Board *board, int x, int y);
 
+/**
+ * @brief Calculates positions of pawns and inserts to array
+ *
+ * @param board
+ * @return void
+ */
+void board_calculatePawnsOnBoardArray(Board *board);
+
 #endif

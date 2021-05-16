@@ -21,14 +21,9 @@ Board *board_create(
   board->playerCount = 2;
 
   board->pawnsOnBoard = (int **)malloc(sizeof(int *) * boardSize);
-
   for (int i = 0; i < boardSize; i++)
   {
     board->pawnsOnBoard[i] = (int *)malloc(sizeof(int) * boardSize);
-    for (int j = 0; j < boardSize; j++)
-    {
-      board->pawnsOnBoard[i][j] = 0;
-    }
   }
 
   sfIntRect intRect = {0, 0, textureSize, textureSize};
@@ -44,13 +39,7 @@ Board *board_create(
 
   player_makeActive(board->players[1]);
 
-  for (int x = 0; x < board->playerCount; x++)
-  {
-    for (int i = 0; i < board->players[x]->iPawnCount; i++)
-    {
-      board->pawnsOnBoard[board->players[x]->pawns[i]->position->x][board->players[x]->pawns[i]->position->y] = x == 0 ? 1 : -1;
-    }
-  }
+  board_calculatePawnsOnBoardArray(board);
 
   return board;
 }
@@ -222,4 +211,32 @@ void board_resetTilesTextures(Board *board)
 void board_markTileTexture(Board *board, int x, int y)
 {
   sfSprite_setTexture(board->tileSprites[x][y], board->tileTextures[(x + y) % 2 == 1 ? 1 : 3], sfFalse);
+}
+
+void board_calculatePawnsOnBoardArray(Board *board)
+{
+  for (int i = 0; i < board->boardSize; i++)
+    for (int j = 0; j < board->boardSize; j++)
+      board->pawnsOnBoard[i][j] = 0;
+
+  for (int x = 0; x < board->playerCount; x++)
+  {
+    for (int i = 0; i < board->players[x]->iPawnCount; i++)
+    {
+      int pX = board->players[x]->pawns[i]->position->x,
+          pY = board->players[x]->pawns[i]->position->y;
+
+      if (pX < 0 || pX >= board->boardSize || pY < 0 || pY >= board->boardSize)
+        continue;
+
+      board->pawnsOnBoard[pX][pY] = x == 0 ? 1 : -1;
+    }
+  }
+
+  for (int i = 0; i < board->boardSize; i++)
+  {
+    for (int j = 0; j < board->boardSize; j++)
+      printf("%d\t", board->pawnsOnBoard[i][j]);
+    printf("\n");
+  }
 }

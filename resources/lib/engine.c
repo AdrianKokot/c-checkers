@@ -52,7 +52,7 @@ bool engine_checkWinState(Board *board)
     int wonPlayerIndex = board_getWinStatus(board);
 
     sfText *endText = sfText_create();
-    sfText_setString(endText, wonPlayerIndex == 0 ? "Gracz nr 1 wygral" : "Gracz nr 2 wygral");
+    sfText_setString(endText, wonPlayerIndex == 0 ? "Player 1 won!" : "Player 2 won!");
     sfText_setFont(endText, board->font);
     sfText_setCharacterSize(endText, 50);
     sfText_setColor(endText, sfWhite);
