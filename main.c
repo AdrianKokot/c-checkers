@@ -1,31 +1,28 @@
 #include "./resources/headers/checkers.h"
-#include <windows.h>
 
 int main()
 {
-  // TODO read those variables from config
-  const int intBoardSize = 10,
-            intTextureSize = 64,
-            intBoardBorder = 24,
-            intWindowSize = intBoardSize * intTextureSize + 2 * intBoardBorder;
-
-  const char stringBoardTileTexturesPaths[4][255] = {
+  char stringBoardTileTexturesPaths[4][255] = {
       "./resources/sprites/tile2.png",
       "./resources/sprites/tile2_marked.png",
       "./resources/sprites/tile1.png",
       "./resources/sprites/tile1_marked.png"};
 
-  const char stringPlayerPawnTexturesPaths[4][255] = {
+  char stringPlayerPawnTexturesPaths[4][255] = {
       "./resources/sprites/pawn1.png",
       "./resources/sprites/pawn1_queen.png",
       "./resources/sprites/pawn2.png",
       "./resources/sprites/pawn2_queen.png"};
 
+  int *config = engine_readConfig();
+
+  const int intWindowSize = (config[0]) * (config[1]) + 2 * (config[2]);
+
   Board *board = board_create(
       engine_createWindow(intWindowSize),
-      intBoardSize,
-      intTextureSize,
-      intBoardBorder,
+      config[0],
+      config[1],
+      config[2],
       stringBoardTileTexturesPaths,
       stringPlayerPawnTexturesPaths);
 

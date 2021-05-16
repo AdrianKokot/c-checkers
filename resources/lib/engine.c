@@ -82,3 +82,27 @@ void engine_attachBackgroundToBoard(Board *board)
   board->spriteBackground = spriteBoardBackground;
   board->shapeBackground = shapeBoardBorder;
 }
+
+int *engine_readConfig()
+{
+  int configLines = 3;
+  FILE *confInput = fopen("./game.ini", "r");
+  char temp[255];
+
+  if (confInput == NULL)
+  {
+    printf("game.ini not found.");
+    exit(0);
+  }
+
+  int *result = malloc(sizeof(int) * 3);
+
+  for (int i = 0; i < configLines && !feof(confInput); i++)
+  {
+    fscanf(confInput, "%255[^=]= %d\n", temp, &result[i]);
+  }
+
+  fclose(confInput);
+
+  return result;
+}

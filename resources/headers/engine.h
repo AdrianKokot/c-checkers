@@ -51,4 +51,11 @@ bool engine_checkWinState(Board *board);
  */
 void engine_attachBackgroundToBoard(Board *board);
 
+/**
+ * @brief Read boardSize, textureSize, boardBorderSize from config
+ *
+ * @return int* (array with 3 items)
+ */
+int* engine_readConfig();
+
 #endif
