@@ -63,3 +63,22 @@ bool engine_checkWinState(Board *board)
   }
   return false;
 }
+
+void engine_attachBackgroundToBoard(Board *board)
+{
+  int intWindowSize = board->boardSize * board->textureSize + 2 * board->boardBorder;
+
+  sfColor sfColorBoardBackground = sfColor_fromRGB(78, 52, 46);
+  sfSprite *spriteBoardBackground = engine_createSprite("./resources/sprites/board_background.jpg");
+
+  sfVector2f shapeBoardBorderSize = {intWindowSize - 32, intWindowSize - 32};
+  sfVector2f shapeBoardBorderPosition = {16, 16};
+  sfRectangleShape *shapeBoardBorder = sfRectangleShape_create();
+
+  sfRectangleShape_setFillColor(shapeBoardBorder, sfColorBoardBackground);
+  sfRectangleShape_setSize(shapeBoardBorder, shapeBoardBorderSize);
+  sfRectangleShape_setPosition(shapeBoardBorder, shapeBoardBorderPosition);
+
+  board->spriteBackground = spriteBoardBackground;
+  board->shapeBackground = shapeBoardBorder;
+}

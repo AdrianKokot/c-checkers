@@ -33,6 +33,8 @@ struct Board
   sfTexture **tileTextures;
   sfSprite ***tileSprites;
   sfFont *font;
+  sfSprite *spriteBackground;
+  sfRectangleShape *shapeBackground;
 };
 
 /**

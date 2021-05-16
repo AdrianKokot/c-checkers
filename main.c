@@ -3,7 +3,7 @@
 
 int main()
 {
-
+  // TODO read those variables from config
   const int intBoardSize = 10,
             intTextureSize = 64,
             intBoardBorder = 24,
@@ -29,19 +29,7 @@ int main()
       stringBoardTileTexturesPaths,
       stringPlayerPawnTexturesPaths);
 
-  // TESTOWY BACKGROUND
-  sfColor sfColorBoardBackground = sfColor_fromRGB(78, 52, 46);
-  sfSprite *spriteBoardBackground = engine_createSprite("./resources/sprites/board_background.jpg");
-
-  sfVector2f shapeBoardBorderSize = {intWindowSize - 32, intWindowSize - 32};
-  sfVector2f shapeBoardBorderPosition = {16, 16};
-  sfRectangleShape *shapeBoardBorder = sfRectangleShape_create();
-
-  sfRectangleShape_setFillColor(shapeBoardBorder, sfColorBoardBackground);
-  sfRectangleShape_setSize(shapeBoardBorder, shapeBoardBorderSize);
-  sfRectangleShape_setPosition(shapeBoardBorder, shapeBoardBorderPosition);
-
-  // KONIEC TESTU
+  engine_attachBackgroundToBoard(board);
 
   if (!board->window)
     return 1;
@@ -54,11 +42,6 @@ int main()
 
     if (!engine_checkWinState(board))
     {
-      // RENDER TEST BACKGROUND
-      sfRenderWindow_drawSprite(board->window, spriteBoardBackground, NULL);
-      sfRenderWindow_drawRectangleShape(board->window, shapeBoardBorder, NULL);
-      // END RENDER TEST BACKGROUND
-
       board_draw(board);
     }
 

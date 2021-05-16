@@ -44,4 +44,11 @@ void engine_checkEvents(Board *board);
  */
 bool engine_checkWinState(Board *board);
 
+/**
+ * @brief Add background sprites to render in given board
+ *
+ * @param board
+ */
+void engine_attachBackgroundToBoard(Board *board);
+
 #endif

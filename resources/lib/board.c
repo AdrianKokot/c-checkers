@@ -111,9 +111,11 @@ void board_destroy(Board *board)
   }
 }
 
-// TODO add board background drawing to board_draw
 void board_draw(Board *board)
 {
+  sfRenderWindow_drawSprite(board->window, board->spriteBackground, NULL);
+  sfRenderWindow_drawRectangleShape(board->window, board->shapeBackground, NULL);
+
   board_drawBoard(board);
   board_drawPawns(board);
 }

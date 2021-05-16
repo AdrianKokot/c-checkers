@@ -28,7 +28,7 @@ void pawn_setType(Pawn *pawn, PawnType type)
   pawn_setTexture(pawn, pawn->player->textures[pawn->pawnType]);
 }
 
-// FIXME some bugs with beating
+// FIXME some bugs with beating as black
 BoardPosition pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int **pawnsOnBoard, int boardSize, int yDiff)
 {
   if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
@@ -133,7 +133,7 @@ void pawn_markAvailableMoves(Pawn *pawn)
   }
 }
 
-// FIXME bugs with beating
+// FIXME bugs with beating as black
 void pawn_move(Pawn *pawn, BoardPosition position)
 {
 
