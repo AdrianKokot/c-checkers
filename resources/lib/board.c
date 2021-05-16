@@ -20,6 +20,17 @@ Board *board_create(
   board->playerPawnCount = ((boardSize - 2) / 2) * (boardSize / 2);
   board->playerCount = 2;
 
+  board->pawnsOnBoard = (int **)malloc(sizeof(int *) * boardSize);
+
+  for (int i = 0; i < boardSize; i++)
+  {
+    board->pawnsOnBoard[i] = (int *)malloc(sizeof(int) * boardSize);
+    for (int j = 0; j < boardSize; j++)
+    {
+      board->pawnsOnBoard[i][j] = 0;
+    }
+  }
+
   sfIntRect intRect = {0, 0, textureSize, textureSize};
 
   board->tileTextures = malloc(sizeof(sfTexture *) * 4);
@@ -32,6 +43,14 @@ Board *board_create(
   board_createBoardSprites(board);
 
   player_makeActive(board->players[1]);
+
+  for (int x = 0; x < board->playerCount; x++)
+  {
+    for (int i = 0; i < board->players[x]->iPawnCount; i++)
+    {
+      board->pawnsOnBoard[board->players[x]->pawns[i]->position->x][board->players[x]->pawns[i]->position->y] = x == 0 ? 1 : -1;
+    }
+  }
 
   return board;
 }

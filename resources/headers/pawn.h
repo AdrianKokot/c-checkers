@@ -32,7 +32,22 @@ struct Pawn
   BoardPosition *position;
   PawnType pawnType;
   sfSprite *sprite;
-  Pawn **availableBeats;
+  PawnBeat *availableMoves;
+  int availableMovesCount;
+};
+
+/**
+ * @brief Representation of Pawn's move on board with beating.
+ *
+ * @param BoardPosition destination
+ * @param Pawn **pawnsToBeat array of pawns to beat
+ * @param int pawnsToBeatCount
+ */
+struct PawnBeat {
+  int x;
+  int y;
+  BoardPosition *pawnsToBeat;
+  int pawnsToBeatCount;
 };
 
 /**
@@ -65,12 +80,12 @@ void pawn_setTexture(Pawn *pawn, const sfTexture *texture);
 void pawn_setType(Pawn *pawn, PawnType type);
 
 /**
- * @brief Get available moves on board for given pawn.
+ * @brief Generate available moves on board for given pawn.
  *
  * @param pawn pawn
- * @return array of positions that are available
+ * @return void
  */
-BoardPosition *pawn_getAvailableMoves(Pawn *pawn);
+void pawn_generateAvailableMoves(Pawn *pawn);
 
 /**
  * @brief Marks available moves for player on board.

@@ -29,6 +29,7 @@ struct Board
   int boardSize;
   int textureSize;
   int boardBorder;
+  int **pawnsOnBoard;
   Player **players;
   sfTexture **tileTextures;
   sfSprite ***tileSprites;

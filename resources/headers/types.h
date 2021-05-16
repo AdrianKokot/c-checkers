@@ -7,5 +7,6 @@ typedef struct BoardPosition BoardPosition;
 typedef struct Board Board;
 typedef struct Player Player;
 typedef struct Pawn Pawn;
+typedef struct PawnBeat PawnBeat;
 
 #endif
