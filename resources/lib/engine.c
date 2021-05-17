@@ -51,14 +51,17 @@ bool engine_checkWinState(Board *board)
   {
     int wonPlayerIndex = board_getWinStatus(board);
 
-    sfText *endText = sfText_create();
-    sfText_setString(endText, wonPlayerIndex == 0 ? "Player 1 won!" : "Player 2 won!");
-    sfText_setFont(endText, board->font);
-    sfText_setCharacterSize(endText, 50);
-    sfText_setColor(endText, sfWhite);
-    // TODO center that text
+    sfText_setString(board->endText, wonPlayerIndex == 0 ? "Player 1 won!" : "Player 2 won!");
 
-    sfRenderWindow_drawText(board->window, endText, NULL);
+    sfFloatRect textRect = sfText_getLocalBounds(board->endText);
+    sfVector2f textpos = {textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f};
+    float screensize = (board->boardSize * board->textureSize + board->boardBorder * 2) / 2.0f;
+    sfVector2f scrpos = {screensize, screensize};
+
+    sfText_setOrigin(board->endText, textpos);
+    sfText_setPosition(board->endText, scrpos);
+
+    sfRenderWindow_drawText(board->window, board->endText, NULL);
 
     return true;
   }

@@ -28,9 +28,9 @@ struct BoardPosition
  * @param players array of pointers to players
  * @param tileTextures textures of tiles
  * @param tileSprites sprites of tiles
- * @param font pointer to font
  * @param spriteBackground board background sprite
  * @param shapeBackground board background shape
+ * @param endText text struct to display on ending
  */
 struct Board
 {
@@ -44,9 +44,9 @@ struct Board
   Player **players;
   sfTexture **tileTextures;
   sfSprite ***tileSprites;
-  sfFont *font;
   sfSprite *spriteBackground;
   sfRectangleShape *shapeBackground;
+  sfText *endText;
 };
 
 /**

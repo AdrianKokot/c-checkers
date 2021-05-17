@@ -8,11 +8,10 @@ Board *board_create(
     const char boardTileTextures[4][255],
     const char playerPawnTextures[4][255])
 {
-  int intBoardTilesTexturesCount = 4;
-
   Board *board = malloc(sizeof(Board));
 
-  board->font = sfFont_createFromFile("./resources/fonts/arial.ttf");
+  // Init values
+  int intBoardTilesTexturesCount = 4;
   board->window = window;
   board->boardSize = boardSize;
   board->textureSize = textureSize;
@@ -20,12 +19,21 @@ Board *board_create(
   board->playerPawnCount = ((boardSize - 2) / 2) * (boardSize / 2);
   board->playerCount = 2;
 
+  // End Text creation
+  board->endText = sfText_create();
+
+  sfText_setFont(board->endText, sfFont_createFromFile("./resources/fonts/arial.ttf"));
+  sfText_setCharacterSize(board->endText, 50);
+  sfText_setColor(board->endText, sfWhite);
+
+  // Pawns on board generation
   board->pawnsOnBoard = (int **)malloc(sizeof(int *) * boardSize);
   for (int i = 0; i < boardSize; i++)
   {
     board->pawnsOnBoard[i] = (int *)malloc(sizeof(int) * boardSize);
   }
 
+  // Setting tile's textures
   sfIntRect intRect = {0, 0, textureSize, textureSize};
 
   board->tileTextures = malloc(sizeof(sfTexture *) * 4);
