@@ -21,10 +21,12 @@ typedef enum
 /**
  * @brief Pawn representation on Board.
  *
- * @param Player *player
- * @param BoardPosition *position
- * @param PawnType pawnType
- * @param sfSprite *sprite
+ * @param player owner pointer
+ * @param position position on the board
+ * @param pawnType type of the pawn
+ * @param sprite sprite struct
+ * @param availableMoves array of available moves for the pawn
+ * @param availableMovesCount number of available moves
  */
 struct Pawn
 {
@@ -32,7 +34,23 @@ struct Pawn
   BoardPosition *position;
   PawnType pawnType;
   sfSprite *sprite;
-  Pawn **availableBeats;
+  PawnBeat *availableMoves;
+  int availableMovesCount;
+};
+
+/**
+ * @brief Representation of Pawn's move on board
+ *
+ * @param x position on board on X axis
+ * @param y position on board on X axis
+ * @param pawnsToBeat array of pawns that are beatable on that path
+ * @param pawnsToBeatCount number of pawns that are beatable
+ */
+struct PawnBeat {
+  int x;
+  int y;
+  BoardPosition *pawnsToBeat;
+  int pawnsToBeatCount;
 };
 
 /**
@@ -48,7 +66,7 @@ Pawn *pawn_create(int iPosX, int iPosY, Player *player);
 /**
  * @brief Set new texture to pawn.
  *
- * @param pawn
+ * @param pawn pawn pointer
  * @param texture texture to assing to sprite
  * @return void
  */
@@ -58,24 +76,24 @@ void pawn_setTexture(Pawn *pawn, const sfTexture *texture);
  * @brief Change pawn type. Changing type will change the
  *        sprite texture to proper one.
  *
- * @param pawn that
- * @param type type to assign
+ * @param pawn pawn pointer
+ * @param type pawn type to assign
  * @return void
  */
 void pawn_setType(Pawn *pawn, PawnType type);
 
 /**
- * @brief Get available moves on board for given pawn.
+ * @brief Generate available moves on board for given pawn.
  *
- * @param pawn pawn
- * @return array of positions that are available
+ * @param pawn pawn pointer
+ * @return void
  */
-BoardPosition *pawn_getAvailableMoves(Pawn *pawn);
+void pawn_generateAvailableMoves(Pawn *pawn);
 
 /**
  * @brief Marks available moves for player on board.
  *
- * @param pawn pawn that available moves will be marked
+ * @param pawn pointer to the pawn that available moves will be marked
  * @return void
  */
 void pawn_markAvailableMoves(Pawn *pawn);
@@ -90,7 +108,7 @@ void pawn_markAvailableMoves(Pawn *pawn);
 void pawn_move(Pawn *pawn, BoardPosition position);
 
 /**
- * @brief Remove given pawn from the game
+ * @brief Remove given pawn from the board and memory
  *
  * @param pawn
  * @return void
@@ -103,7 +121,7 @@ void pawn_remove(Pawn *pawn);
  * @param board
  * @param x
  * @param y
- * @return Pawn*
+ * @return found pawn
  */
 Pawn *pawn_findByPos(Board *board, int x, int y);
 #endif

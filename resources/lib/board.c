@@ -8,11 +8,10 @@ Board *board_create(
     const char boardTileTextures[4][255],
     const char playerPawnTextures[4][255])
 {
-  int intBoardTilesTexturesCount = 4;
-
   Board *board = malloc(sizeof(Board));
 
-  board->font = sfFont_createFromFile("./resources/fonts/arial.ttf");
+  // Init values
+  int intBoardTilesTexturesCount = 4;
   board->window = window;
   board->boardSize = boardSize;
   board->textureSize = textureSize;
@@ -20,6 +19,21 @@ Board *board_create(
   board->playerPawnCount = ((boardSize - 2) / 2) * (boardSize / 2);
   board->playerCount = 2;
 
+  // End Text creation
+  board->endText = sfText_create();
+
+  sfText_setFont(board->endText, sfFont_createFromFile("./resources/fonts/arial.ttf"));
+  sfText_setCharacterSize(board->endText, 50);
+  sfText_setColor(board->endText, sfWhite);
+
+  // Pawns on board generation
+  board->pawnsOnBoard = (int **)malloc(sizeof(int *) * boardSize);
+  for (int i = 0; i < boardSize; i++)
+  {
+    board->pawnsOnBoard[i] = (int *)malloc(sizeof(int) * boardSize);
+  }
+
+  // Setting tile's textures
   sfIntRect intRect = {0, 0, textureSize, textureSize};
 
   board->tileTextures = malloc(sizeof(sfTexture *) * 4);
@@ -32,6 +46,8 @@ Board *board_create(
   board_createBoardSprites(board);
 
   player_makeActive(board->players[1]);
+
+  board_calculatePawnsOnBoardArray(board);
 
   return board;
 }
@@ -111,9 +127,11 @@ void board_destroy(Board *board)
   }
 }
 
-// TODO add board background drawing to board_draw
 void board_draw(Board *board)
 {
+  sfRenderWindow_drawSprite(board->window, board->spriteBackground, NULL);
+  sfRenderWindow_drawRectangleShape(board->window, board->shapeBackground, NULL);
+
   board_drawBoard(board);
   board_drawPawns(board);
 }
@@ -201,4 +219,25 @@ void board_resetTilesTextures(Board *board)
 void board_markTileTexture(Board *board, int x, int y)
 {
   sfSprite_setTexture(board->tileSprites[x][y], board->tileTextures[(x + y) % 2 == 1 ? 1 : 3], sfFalse);
+}
+
+void board_calculatePawnsOnBoardArray(Board *board)
+{
+  for (int i = 0; i < board->boardSize; i++)
+    for (int j = 0; j < board->boardSize; j++)
+      board->pawnsOnBoard[i][j] = 0;
+
+  for (int x = 0; x < board->playerCount; x++)
+  {
+    for (int i = 0; i < board->players[x]->iPawnCount; i++)
+    {
+      int pX = board->players[x]->pawns[i]->position->x,
+          pY = board->players[x]->pawns[i]->position->y;
+
+      if (pX < 0 || pX >= board->boardSize || pY < 0 || pY >= board->boardSize)
+        continue;
+
+      board->pawnsOnBoard[pX][pY] = x == 0 ? 1 : -1;
+    }
+  }
 }

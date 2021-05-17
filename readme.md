@@ -22,6 +22,9 @@ List of used technologies & libraries:
 
 The project has to be written in C and must be accomplish functionality given below:
  - Files\modules separation
+     - Fulfilled by splitting source code to a few .h and .c files
  - IO operations
+     - Fulfilled by using game.ini as config file
  - GUI
+     - Fulfilled by using CSFML
  - Error handling

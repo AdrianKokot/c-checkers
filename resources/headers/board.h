@@ -6,8 +6,8 @@
 /**
  * @brief Position on the board
  *
- * @param int x
- * @param int y
+ * @param x position on X axis
+ * @param y position on Y axis
  */
 struct BoardPosition
 {
@@ -18,8 +18,19 @@ struct BoardPosition
 /**
  * @brief Board representation
  *
- * @param sfRenderWindow *window
- * @param Player **players
+ * @param window CSFML window struct pointer
+ * @param playerPawnCount count of pawns that every player has
+ * @param playerCount count of players
+ * @param boardSize size of board (number of tiles on every axis)
+ * @param textureSize size of texture in pixels
+ * @param boardBorder size of border from window to board
+ * @param pawnsOnBoard array of pawn positions on board
+ * @param players array of pointers to players
+ * @param tileTextures textures of tiles
+ * @param tileSprites sprites of tiles
+ * @param spriteBackground board background sprite
+ * @param shapeBackground board background shape
+ * @param endText text struct to display on ending
  */
 struct Board
 {
@@ -29,10 +40,13 @@ struct Board
   int boardSize;
   int textureSize;
   int boardBorder;
+  int **pawnsOnBoard;
   Player **players;
   sfTexture **tileTextures;
   sfSprite ***tileSprites;
-  sfFont *font;
+  sfSprite *spriteBackground;
+  sfRectangleShape *shapeBackground;
+  sfText *endText;
 };
 
 /**
@@ -41,7 +55,8 @@ struct Board
  * @param window sfRenderWindow instance
  * @param boardSize number of rows and columns of board
  * @param textureSize size of texture in pixels
- * @param boardBorder size of border (space betweend window and position that board will be drawn) in pixels
+ * @param boardBorder size of border in pixels
+ *                    (space between window and position that board will be drawn)
  * @param boardTileTextures 2d array of paths to tiles and marked tiles textures
  * @param playerPawnTextures 2d array of paths to each player standard and queen pawns textures
  * @return created Board
@@ -80,6 +95,7 @@ void board_createBoardSprites(Board *board);
 /**
  * @brief Draw board tiles and player pawns on sfRenderWindow
  *
+ * @param board board
  * @return void
  */
 void board_draw(Board *board);
@@ -87,6 +103,7 @@ void board_draw(Board *board);
 /**
  * @brief Draw board tiles on sfRenderWindow
  *
+ * @param board board
  * @return void
  */
 void board_drawBoard(Board *board);
@@ -94,6 +111,7 @@ void board_drawBoard(Board *board);
 /**
  * @brief Draw player pawns on sfRenderWindow
  *
+ * @param board board
  * @return void
  */
 void board_drawPawns(Board *board);
@@ -101,6 +119,7 @@ void board_drawPawns(Board *board);
 /**
  * @brief Destroy memory allocation for all items in board. Including window, players, pawns
  *
+ * @param board board
  * @return void
  */
 void board_destroy(Board *board);
@@ -108,13 +127,15 @@ void board_destroy(Board *board);
 /**
  * @brief Check if game has ended
  *
- * @return true in case of win / tie, false otherwise
+ * @param board board
+ * @return true in case any player has won, false otherwise
  */
 bool board_checkWinStatus(Board *board);
 
 /**
  * @brief Gets index of player that won
  *
+ * @param board board
  * @return index of player that won, -1 if nobody won
  */
 int board_getWinStatus(Board *board);
@@ -123,6 +144,9 @@ int board_getWinStatus(Board *board);
  * @brief Checks if current player selected their pawn by mouse event
  *        if yes, then pawn's available moves are marked
  *
+ * @param board board
+ * @param mousePosX position of mouse X axis
+ * @param mousePosY position of mouse Y axis
  * @return void
  */
 void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY);
@@ -131,6 +155,9 @@ void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
  * @brief Checks if current player selected their pawn available move by mouse event
  *        if yes, then pawn is moved
  *
+ * @param board board
+ * @param mousePosX position of mouse X axis
+ * @param mousePosY position of mouse Y axis
  * @return void
  */
 void board_checkTileSelectionByMouse(Board *board, int mousePosX, int mousePosY);
@@ -138,7 +165,7 @@ void board_checkTileSelectionByMouse(Board *board, int mousePosX, int mousePosY)
 /**
  * @brief Resets all tiles texture to the default one
  *
- * @param board
+ * @param board board
  * @return void
  */
 void board_resetTilesTextures(Board *board);
@@ -152,5 +179,13 @@ void board_resetTilesTextures(Board *board);
  * @return void
  */
 void board_markTileTexture(Board *board, int x, int y);
+
+/**
+ * @brief Calculates positions of pawns and inserts to array
+ *
+ * @param board
+ * @return void
+ */
+void board_calculatePawnsOnBoardArray(Board *board);
 
 #endif

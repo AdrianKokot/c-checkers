@@ -6,11 +6,13 @@
 /**
  * @brief Player representation on Board.
  *
- * @param bool bIsActive
- * @param int iPawnCount
- * @param sfTexture *textures
- * @param Pawn **pawns
- * @param Board *board
+ * @param bIsActive bool that represents
+ *                  whether player is now the active one
+ * @param iPawnCount count of player's available pawns
+ * @param textures array of textures for player's pawns
+ * @param pawns array of player's pawns
+ * @param board pointer to board
+ * @param selectedPawn currently selected by click pawn
  */
 struct Player
 {
@@ -43,7 +45,5 @@ Player *player_create(int iPawnCount, Board *board, sfTexture **textures, bool i
  * @return void
  */
 void player_makeActive(Player *player);
-
-#include "./pawn.h"
 
 #endif
