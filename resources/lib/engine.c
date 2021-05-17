@@ -56,6 +56,7 @@ bool engine_checkWinState(Board *board)
     sfText_setFont(endText, board->font);
     sfText_setCharacterSize(endText, 50);
     sfText_setColor(endText, sfWhite);
+    // TODO center that text
 
     sfRenderWindow_drawText(board->window, endText, NULL);
 

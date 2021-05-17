@@ -232,11 +232,4 @@ void board_calculatePawnsOnBoardArray(Board *board)
       board->pawnsOnBoard[pX][pY] = x == 0 ? 1 : -1;
     }
   }
-
-  for (int i = 0; i < board->boardSize; i++)
-  {
-    for (int j = 0; j < board->boardSize; j++)
-      printf("%d\t", board->pawnsOnBoard[i][j]);
-    printf("\n");
-  }
 }

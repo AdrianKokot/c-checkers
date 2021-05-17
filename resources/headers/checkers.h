@@ -5,12 +5,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <windows.h>
 
 #include "./types.h"
 
 #include "./engine.h"
-#include "./utils.h"
 
 #include "./board.h"
 #include "./pawn.h"
