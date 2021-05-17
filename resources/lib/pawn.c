@@ -29,36 +29,32 @@ void pawn_setType(Pawn *pawn, PawnType type)
   pawn_setTexture(pawn, pawn->player->textures[pawn->pawnType]);
 }
 
+// TODO found parts of multi beat add as available move to give the player possibility to decide
 PawnBeat pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int xDir, int yDir, int playerPawnId, bool previousToBeat)
 {
   PawnBeat move = {-1, -1, (BoardPosition *)malloc(sizeof(BoardPosition) * 0), 0};
 
   if (x >= 0 && x < pawn->player->board->boardSize && y >= 0 && y < pawn->player->board->boardSize)
   {
-    printf("\nCHECKING POS: %d %d val on board: %d", x, y, pawn->player->board->pawnsOnBoard[x][y]);
 
     if (pawn->player->board->pawnsOnBoard[x][y] == 0)
     {
+
       if (previousToBeat == true)
       {
-        printf("\tCALCULATING BEAT: %d %d", x, y);
-
         PawnBeat nextBeat = pawn_checkMoveAvailableness(pawn, x + xDir, y + yDir, xDir, yDir, playerPawnId, false);
-        printf("\nNEXT BEAT: %d %d %d", nextBeat.x, nextBeat.y, nextBeat.pawnsToBeatCount);
         if (nextBeat.x < 0 || nextBeat.pawnsToBeatCount == 0)
         {
           nextBeat = pawn_checkMoveAvailableness(pawn, x - xDir, y + yDir, -xDir, yDir, playerPawnId, false);
-          printf("\nNEXT BEAT 2: %d %d %d", nextBeat.x, nextBeat.y, nextBeat.pawnsToBeatCount);
+
           if (nextBeat.x < 0 || nextBeat.pawnsToBeatCount == 0)
           {
             nextBeat = pawn_checkMoveAvailableness(pawn, x + xDir, y - yDir, xDir, -yDir, playerPawnId, false);
-            printf("\nNEXT BEAT 3: %d %d %d", nextBeat.x, nextBeat.y, nextBeat.pawnsToBeatCount);
           }
         }
 
         if (nextBeat.pawnsToBeatCount > 0 && nextBeat.x >= 0)
         {
-          printf("\nRETURN NEXTBEAT");
           return nextBeat;
         }
       }
@@ -68,23 +64,24 @@ PawnBeat pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int xDir, int yDi
     }
     else if (previousToBeat == false && pawn->player->board->pawnsOnBoard[x][y] == -1 * playerPawnId)
     {
-      printf("\tCALCULATING BEAT: %d %d", x, y);
 
       BoardPosition beatpos = {x, y};
 
       move = pawn_checkMoveAvailableness(pawn, x + xDir, y + yDir, xDir, yDir, playerPawnId, true);
 
-      BoardPosition *beatpositions = (BoardPosition *)malloc(sizeof(BoardPosition) * move.pawnsToBeatCount + 1);
+      BoardPosition *beatpositions = (BoardPosition *)malloc(sizeof(BoardPosition) * (move.pawnsToBeatCount + 1));
+
       for (int i = 0; i < move.pawnsToBeatCount; i++)
       {
         beatpositions[i] = move.pawnsToBeat[i];
       }
+
       beatpositions[move.pawnsToBeatCount++] = beatpos;
       move.pawnsToBeat = beatpositions;
     }
     else if (pawn->player->board->pawnsOnBoard[x][y] == playerPawnId)
     {
-      printf("\tSAME TEAM CHECKER: %d %d", x, y);
+      // Same player pawn
       move.x = -2;
       move.y - 2;
     }
@@ -95,6 +92,8 @@ PawnBeat pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int xDir, int yDi
 
 void pawn_generateAvailableMoves(Pawn *pawn)
 {
+  pawn->availableMovesCount = 0;
+
   PawnBeat pos;
 
   int playerId = pawn->player->board->players[0] == pawn->player ? 0 : 1,
@@ -106,7 +105,6 @@ void pawn_generateAvailableMoves(Pawn *pawn)
 
     int direction[5] = {-1, 1, 1, -1, -1};
 
-    system("cls");
     for (int d = 0; d < 4; d++)
     {
       int i = pawn->position->x + direction[d],
@@ -135,7 +133,6 @@ void pawn_generateAvailableMoves(Pawn *pawn)
   {
     int xAxis[2] = {-1, 1};
 
-    system("cls");
     for (int i = 0; i < 2; i++)
     {
       pos = pawn_checkMoveAvailableness(pawn, pawn->position->x + xAxis[i], pawn->position->y + playerPawnsId, xAxis[i], playerPawnsId, playerPawnsId, false);
@@ -191,8 +188,6 @@ void pawn_move(Pawn *pawn, BoardPosition position)
     }
   }
 
-  pawn->availableMovesCount = 0;
-
   sfVector2f vectorOffset = {
       position.x * pawn->player->board->textureSize + pawn->player->board->boardBorder,
       position.y * pawn->player->board->textureSize + pawn->player->board->boardBorder};
@@ -212,10 +207,7 @@ void pawn_remove(Pawn *pawn)
     if (pawn->player->pawns[i] == pawn)
     {
       pawn->player->pawns[i] = temp;
-      // pawn->player->pawns[pawn->player->iPawnCount - 1] = pawn;
-      // pawn->player->board->pawnsOnBoard[pawn->position->x][pawn->position->y] = 0;
-      // pawn->position->x = -1;
-      // pawn->position->y = -1;
+
       free(pawn);
       sfSprite_destroy(pawn->sprite);
       pawn->player->iPawnCount--;
