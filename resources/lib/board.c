@@ -87,7 +87,7 @@ void board_createPlayers(
   board->players = malloc(sizeof(Player) * 2);
   for (int i = 0; i < board->playerCount; i++)
   {
-    sfTexture **playerTextures = malloc(sizeof(sfTexture *) * intPlayerPawnTexturesCount);
+    sfTexture **playerTextures = (sfTexture **)malloc(sizeof(sfTexture *) * intPlayerPawnTexturesCount);
 
     for (int j = 0; j < intPlayerPawnTexturesCount; j++)
     {
@@ -238,6 +238,9 @@ void board_calculatePawnsOnBoardArray(Board *board)
         continue;
 
       board->pawnsOnBoard[pX][pY] = x == 0 ? 1 : -1;
+
+      // board->players[x]->pawns[i]->availableMoves = (PawnBeat *)malloc(sizeof(PawnBeat) * 255);
+      board->players[x]->pawns[i]->availableMovesCount = 0;
     }
   }
 }

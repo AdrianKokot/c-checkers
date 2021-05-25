@@ -29,7 +29,6 @@ void pawn_setType(Pawn *pawn, PawnType type)
   pawn_setTexture(pawn, pawn->player->textures[pawn->pawnType]);
 }
 
-// TODO found parts of multi beat add as available move to give the player possibility to decide
 PawnBeat pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int xDir, int yDir, int playerPawnId, bool previousToBeat)
 {
   PawnBeat move = {-1, -1, (BoardPosition *)malloc(sizeof(BoardPosition) * 0), 0};
@@ -83,7 +82,7 @@ PawnBeat pawn_checkMoveAvailableness(Pawn *pawn, int x, int y, int xDir, int yDi
     {
       // Same player pawn
       move.x = -2;
-      move.y - 2;
+      move.y = -2;
     }
   }
 
@@ -207,9 +206,10 @@ void pawn_remove(Pawn *pawn)
     if (pawn->player->pawns[i] == pawn)
     {
       pawn->player->pawns[i] = temp;
-
-      free(pawn);
-      sfSprite_destroy(pawn->sprite);
+      pawn->position->x = -1;
+      pawn->position->y = -1;
+      // free(pawn);
+      // sfSprite_destroy(pawn->sprite);
       pawn->player->iPawnCount--;
 
       return;
