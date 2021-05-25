@@ -89,27 +89,27 @@ void engine_attachBackgroundToBoard(Board *board)
 
 int *engine_readConfig()
 {
-  // int configLines = 3;
-  // FILE *confInput = fopen("./game.ini", "r");
-  // char temp[255];
+  int configLines = 3;
+  FILE *confInput = fopen("./game.ini", "r");
+  char temp[255];
 
-  // if (confInput == NULL)
-  // {
-  //   printf("game.ini not found.");
-  //   exit(0);
-  // }
+  if (confInput == NULL)
+  {
+    printf("game.ini not found.");
+    exit(0);
+  }
 
   int *result = malloc(sizeof(int) * 3);
-  result[0] = 10;
-  result[1] = 64;
-  result[2] = 24;
+  // result[0] = 10;
+  // result[1] = 64;
+  // result[2] = 24;
 
-  // for (int i = 0; i < configLines && !feof(confInput); i++)
-  // {
-  //   fscanf(confInput, "%255[^=]= %d\n", temp, &result[i]);
-  // }
+  for (int i = 0; i < configLines && !feof(confInput); i++)
+  {
+    fscanf(confInput, "%255[^=]= %d\n", temp, &result[i]);
+  }
 
-  // fclose(confInput);
+  fclose(confInput);
 
   return result;
 }

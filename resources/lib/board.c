@@ -170,7 +170,8 @@ int board_getWinStatus(Board *board)
 
 void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
 {
-  if (mousePosX > board->boardBorder && mousePosY > board->boardBorder)
+  int max = board->boardBorder + (board->boardSize * board->textureSize);
+  if (mousePosX > board->boardBorder && mousePosY > board->boardBorder && mousePosX < max && mousePosY < max)
   {
     BoardPosition pos = {(mousePosX - board->boardBorder) / board->textureSize, (mousePosY - board->boardBorder) / board->textureSize};
 
@@ -190,7 +191,8 @@ void board_checkPawnSelectionByMouse(Board *board, int mousePosX, int mousePosY)
 
 void board_checkTileSelectionByMouse(Board *board, int mousePosX, int mousePosY)
 {
-  if (mousePosX > board->boardBorder && mousePosY > board->boardBorder)
+  int max = board->boardBorder + (board->boardSize * board->textureSize);
+  if (mousePosX > board->boardBorder && mousePosY > board->boardBorder && mousePosX < max && mousePosY < max)
   {
     BoardPosition pos = {(mousePosX - board->boardBorder) / board->textureSize, (mousePosY - board->boardBorder) / board->textureSize};
 
